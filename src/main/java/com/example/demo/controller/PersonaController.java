@@ -1,13 +1,18 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Persona;
+import com.example.demo.controller.dto.PersonaRequest;
+import com.example.demo.controller.dto.PersonaResponse;
+import com.example.demo.domain.Persona;
 import com.example.demo.service.PersonaService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
+@RequestMapping("api/v1/personas")
 public class PersonaController {
     public final PersonaService service;
 
@@ -15,8 +20,29 @@ public class PersonaController {
         this.service = service;
     }
 
-    @GetMapping("api/personas")
+    @GetMapping
     public List<Persona> personas (){
-        return service.getPersonas();
+        return null;
+    }
+
+    @PostMapping
+    public ResponseEntity<PersonaResponse> crear(@RequestBody PersonaRequest req){
+        Persona personaInput = Persona.builder()
+                .nombre(req.getNombre())
+                .apellido(req.getApellido())
+                .edad(req.getEdad())
+                .build();
+
+        Persona personaCreada = this.service.crearPersona(personaInput);
+        PersonaResponse res = PersonaResponse.builder()
+                .id(personaCreada.getId())
+                .createDate(personaCreada.getCreateDate())
+                .nombre(personaCreada.getNombre())
+                .apellido(personaCreada.getApellido())
+                .edad(personaCreada.getEdad())
+                .mensaje("La persona se guardo correctamente en al bbdd")
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
 }

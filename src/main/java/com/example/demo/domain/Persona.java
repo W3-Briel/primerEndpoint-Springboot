@@ -1,16 +1,29 @@
-package com.example.demo.model;
+package com.example.demo.domain;
 
 
-public class Persona implements  IObtenerID{
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@Builder
+public class Persona{
+    private Long id;
     private String nombre;
     private String apellido;
+    private Integer edad;
+    private LocalDateTime createDate;
 
-    public Persona(String nombre, String apellido) {
-        this.nombre = nombre;
-        this.apellido = apellido;
+    public boolean tieneDatosCompletos() {
+        return nombre != null && !nombre.isBlank() && apellido != null && !apellido.isBlank();
     }
 
-    public String getID() {
-        return String.format("%s-%s", this.nombre, this.apellido);
+    public Boolean edadValida(){
+        return this.edad != null && this.edad >= 18;
     }
 }
