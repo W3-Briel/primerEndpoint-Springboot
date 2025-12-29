@@ -26,8 +26,8 @@ public class PersonaService {
 
     public Persona crearPersona(Persona input){
 
-        if(!input.tieneDatosCompletos()) throw new PersonaError("Faltan campos necesarios para guardar a la persona");
-        if(!input.edadValida()) throw new PersonaError("La edad de la persona deberia ser mayor a 18 años!");
+        //if(!input.tieneDatosCompletos()) throw new PersonaError("Faltan campos necesarios para guardar a la persona");
+        //if(!input.edadValida()) throw new PersonaError("La edad de la persona deberia ser mayor a 18 años!");
 
         PersonaEntity nuevaPersona = this.mapper.toEntity(input);
         nuevaPersona.setCreateDate(LocalDateTime.now());
