@@ -1,4 +1,4 @@
-package com.example.demo.controller.mappers;
+package com.example.demo.controller.mapper;
 
 import com.example.demo.controller.dto.PersonaRequest;
 import com.example.demo.controller.dto.PersonaResponse;

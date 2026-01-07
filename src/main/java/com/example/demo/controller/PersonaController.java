@@ -2,14 +2,13 @@ package com.example.demo.controller;
 
 import com.example.demo.controller.dto.PersonaRequest;
 import com.example.demo.controller.dto.PersonaResponse;
-import com.example.demo.controller.mappers.PersonaWebMapper;
+import com.example.demo.controller.mapper.PersonaWebMapper;
 import com.example.demo.domain.Persona;
 import com.example.demo.service.PersonaService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
