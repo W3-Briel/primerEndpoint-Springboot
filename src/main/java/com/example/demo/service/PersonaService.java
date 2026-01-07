@@ -21,7 +21,10 @@ public class PersonaService {
     }
 
     public List<Persona> getPersonas() {
-        return null;
+        return this.repo.findAll()
+                .stream()
+                .map(entidad -> this.mapper.toDomain(entidad))
+                .toList();
     }
 
     public Persona crearPersona(Persona input){

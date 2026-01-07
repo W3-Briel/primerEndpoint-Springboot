@@ -23,7 +23,21 @@ public class PersonaController {
 
     @GetMapping
     public ResponseEntity<List<PersonaResponse>> personas (){
-        return null;
+        List<PersonaResponse> res = this.service
+                .getPersonas()
+                .stream()
+                .map(domain -> {
+                    return PersonaResponse.builder()
+                            .id(domain.getId())
+                            .createDate(domain.getCreateDate())
+                            .nombre(domain.getNombre())
+                            .apellido(domain.getApellido())
+                            .edad(domain.getEdad())
+                            .build();
+                }
+                ).toList();
+
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @PostMapping
