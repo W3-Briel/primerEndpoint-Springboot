@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.controller.dto.PersonaRequest;
 import com.example.demo.controller.dto.PersonaResponse;
+import com.example.demo.controller.mappers.PersonaWebMapper;
 import com.example.demo.domain.Persona;
 import com.example.demo.service.PersonaService;
 import jakarta.validation.Valid;
@@ -16,9 +17,11 @@ import java.util.List;
 @RequestMapping("api/v1/personas")
 public class PersonaController {
     public final PersonaService service;
+    public final PersonaWebMapper mapper;
 
-    public PersonaController (PersonaService service){
+    public PersonaController (PersonaService service, PersonaWebMapper mapper){
         this.service = service;
+        this.mapper = mapper;
     }
 
     @GetMapping
@@ -26,37 +29,18 @@ public class PersonaController {
         List<PersonaResponse> res = this.service
                 .getPersonas()
                 .stream()
-                .map(domain -> {
-                    return PersonaResponse.builder()
-                            .id(domain.getId())
-                            .createDate(domain.getCreateDate())
-                            .nombre(domain.getNombre())
-                            .apellido(domain.getApellido())
-                            .edad(domain.getEdad())
-                            .build();
-                }
-                ).toList();
+                .map(this.mapper::toResponseSimple)
+                .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @PostMapping
     public ResponseEntity<PersonaResponse> crear(@Valid @RequestBody PersonaRequest req){
-        Persona personaInput = Persona.builder()
-                .nombre(req.getNombre())
-                .apellido(req.getApellido())
-                .edad(req.getEdad())
-                .build();
+        Persona personaInput = this.mapper.toDomain(req);
 
         Persona personaCreada = this.service.crearPersona(personaInput);
-        PersonaResponse res = PersonaResponse.builder()
-                .id(personaCreada.getId())
-                .createDate(personaCreada.getCreateDate())
-                .nombre(personaCreada.getNombre())
-                .apellido(personaCreada.getApellido())
-                .edad(personaCreada.getEdad())
-                .mensaje("La persona se guardo correctamente en al bbdd")
-                .build();
+        PersonaResponse res = this.mapper.toResponseWithMessage(personaCreada,"La persona se guardo correctamente en al bbdd");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
