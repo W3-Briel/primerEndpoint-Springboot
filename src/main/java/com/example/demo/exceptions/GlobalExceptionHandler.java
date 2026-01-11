@@ -41,4 +41,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(code).body(errorResponse);
     }
 
+    @ExceptionHandler(PersonaNotFound.class)
+    public ResponseEntity<Map<String, Object>> notFound(PersonaNotFound error, HttpServletRequest req){
+        int code = HttpStatus.NOT_FOUND.value();
+
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("timestamp", LocalDateTime.now());
+        errorResponse.put("status", code); // 400
+        errorResponse.put("error", "NotFound");
+        errorResponse.put("message", error.getMessage());
+        errorResponse.put("path", req.getRequestURI());
+
+        return ResponseEntity.status(code).body(errorResponse);
+    }
+
 }

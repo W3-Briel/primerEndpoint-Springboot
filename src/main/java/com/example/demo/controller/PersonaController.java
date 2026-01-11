@@ -43,4 +43,10 @@ public class PersonaController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
+
+    @GetMapping("/{personaId}")
+    public ResponseEntity<PersonaResponse> personaById(@PathVariable Long personaId){
+        PersonaResponse res = this.mapper.toResponseWithMessage(this.service.getPersonaById(personaId),"esta persona se encuentra en la bbdd");
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    };
 }
